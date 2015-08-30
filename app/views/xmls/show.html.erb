@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Key access:</strong>
+  <%= @xml.key_access %>
+</p>
+
+<p>
+  <strong>Xml text:</strong>
+  <%= @xml.xml_text %>
+</p>
+
+<p>
+  <strong>Link de Acesso:</strong>
+  <%= link_to "https://trampo-facu2-mayconn.c9.io/xml/key/"+@xml.key_access %>
+</p>
+
+<%= link_to 'Edit', edit_xml_path(@xml) %> |
+<%= link_to 'Back', xmls_path %>

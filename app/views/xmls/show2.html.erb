@@ -1,0 +1,151 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Key Access:</strong>
+  <%= @xml.key_access %>
+</p>
+
+<p>
+  <strong>Link Access:</strong>
+  <%= link_to "https://trampo-facu2-mayconn.c9.io/xml/key/"+@xml.key_access %>
+</p>
+
+<p></p>
+
+<p>
+  
+  <% xmlll = @hashw['xml'] %>
+  <% parts = xmlll['parts'] %>
+  <% actions = xmlll['actions'] %>
+  <% commitments = xmlll['commitments'] %>
+  <% order_commitment = xmlll['order_commitment'] %>
+  
+  <table border='1'  >
+  <tr><td colspan='2' align='center'><b><font size='4'> Parts </font></b></td></tr>
+  <tr>
+    <td style="padding-left: 18px;" ><b>Name</b></td>
+    <td style="padding-left: 18px;"><b>ID</b></td>
+  </tr>
+  <% parts.each do |key, value| %> 
+    <% value.each do |part| %>
+    <tr>
+      <% part.each do |i, j| %>
+        <td style="padding-right: 10px; padding-left: 10px;" ><%= j %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  <% end %>
+  </table>
+  
+  <br/>
+  
+  <table border='1'  >
+  <tr><td colspan='4' align='center'><b><font size='4'> Actions </font></b></td></tr>
+  <tr>
+    <td style="padding-left: 18px;" ><b>Name</b></td>
+    <td style="padding-left: 18px;"><b>Sender</b></td>
+    <td style="padding-left: 18px;" ><b>Receiver</b></td>
+    <td style="padding-left: 18px; padding-right: 18px; "><b>Time in Minutes</b></td>
+  </tr>
+  <% actions.each do |key, value| %> 
+    <% value.each do |action| %>
+    <tr>
+      <% action.each do |i, j| %>
+        <td style="padding-right: 10px; padding-left: 10px;" ><%= j %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  <% end %>
+  </table>
+  
+  </br>
+  
+  <table border='1'  >
+  <tr>
+    <td rowspan = '2' style="padding-left: 18px;" ><b>Commitment</b></td>
+    <td colspan='3' align='center'><b><font size='4'> Classification of Actions in Commitments </font></b></td></tr>
+  <tr>
+    <td style="padding-left: 18px;"><b>Trigger</b></td>
+    <td style="padding-left: 18px;" ><b>Involve</b></td>
+    <td style="padding-left: 18px; padding-right: 18px; "><b>Finish</b></td>
+  </tr>
+  <% commitments.each do |key, value| %> 
+    <% value.each do |commitment| %>
+      <% actionsInCommitment = commitment['actions'] %>
+      <% nn = 0 %>
+      <% actionsInCommitment.each do |opa, opa3| %>
+        <% opa3.each do |opa2| %>
+          <% nn=nn+1 %>
+        <% end %>
+      <% end %>
+      
+      
+      <% ordem = 0; %>
+      
+      
+      <% actionsInCommitment.each do |opa, opa3| %>
+        
+        <% opa3.each do |opa2| %>
+          
+          <% ordem = ordem +1 %>
+          
+          <% if ordem == 1 %>
+            <tr >
+              <td rowspan='<%= nn.to_s  %>' colspan='1' ><%= commitment['name'] %> </td>
+          <% else %>
+            <tr >
+          <% end %>
+          
+          <% if opa2['attribute'] == 'trigger' %>
+            <td> <%= opa2['name'] %> </td>
+            <td></td>
+            <td></td>
+          <% elsif opa2['attribute'] == 'involve' %>
+            <td></td>
+            <td> <%= opa2['name'] %> </td>
+            <td></td>
+          <% else %>
+            <td></td>
+            <td></td>
+            <td> <%= opa2['name'] %> </td>
+          <% end %>
+          
+          </tr>
+      
+        
+        <% end %>
+      <% end %>
+      
+    <% end %>
+  <% end %>
+  </table>
+  
+  <br/>
+  
+    <table border='1'  >
+    <tr><td colspan='3' align='center'><b><font size='4'> Order Commitments </font></b></td></tr>
+    <tr>
+      <td></td>
+      <td><b><font size='4'> Master </font></b></td>
+      <td><b><font size='4'> Slave </font></b></td>
+    </tr>
+    <% i=0 %>
+    <% order_commitment.each do |key, value| %> 
+      <% value.each do |rel| %>
+        <tr>
+          <% i=i+1 %>
+          <td><%= i %>°</td>
+          <td><%= rel['name_commitment_master'] %></td> 
+          <td><%= rel['name_commitment_slave'] %> </td>
+        </tr>
+      <% end %>
+    <% end %>
+    </table>
+  
+  
+  
+  
+</p>
+
+<%= link_to 'Edit', edit_xml_path(@xml) %> |
+<%= link_to 'Back', xmls_path %>
